@@ -263,8 +263,9 @@ public class BinArray {
     @Override
     public String toString() {
         StringBuilder builder = new StringBuilder();
-        builder.append("BinArray [TODO");
-        builder.append("]");
+        for (int i=0; i<length; i++) {
+            builder.append(bitSet[i] ? "1":"0");
+        }
         return builder.toString();
     }
 
