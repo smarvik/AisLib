@@ -67,7 +67,9 @@ public class AisMessage6 extends AisBinaryMessage {
         encoder.addVal(spare, 1);
         encoder.addVal(dac, 10);
         encoder.addVal(fi, 6);
-        encoder.append(appMessage.getEncoded());
+        if (appMessage != null) {
+            encoder.append(appMessage.getEncoded());
+        }
         return encoder;
     }
 
