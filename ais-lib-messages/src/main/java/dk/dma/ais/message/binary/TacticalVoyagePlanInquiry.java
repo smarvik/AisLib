@@ -17,7 +17,6 @@ package dk.dma.ais.message.binary;
 import dk.dma.ais.binary.BinArray;
 import dk.dma.ais.binary.SixbitEncoder;
 import dk.dma.ais.binary.SixbitException;
-import dk.dma.ais.message.AisPosition;
 
 /**
  * ASM for suggesting a route to a vessel
@@ -27,8 +26,7 @@ public class TacticalVoyagePlanInquiry extends AisApplicationMessage {
     public static final int DAC = 219;
     public static final int FI = 5;
 
-    private AisPosition controlledAreaNorthWest;
-    private AisPosition controlledAreaSouthEast;
+    private int duration;
 
     public TacticalVoyagePlanInquiry() {
         super(DAC, FI);
@@ -36,62 +34,33 @@ public class TacticalVoyagePlanInquiry extends AisApplicationMessage {
 
     public TacticalVoyagePlanInquiry(BinArray binArray) throws SixbitException {
         super(DAC, FI, binArray);
-
-        if (binArray.hasMoreBits()) {
-            final long northRaw = binArray.getVal(28);
-            final long eastRaw = binArray.getVal(27);
-            final long southRaw = binArray.getVal(28);
-            final long westRaw = binArray.getVal(27);
-            controlledAreaNorthWest = new AisPosition(northRaw, westRaw);
-            controlledAreaSouthEast = new AisPosition(southRaw, eastRaw);
-        }
+        duration = (int) binArray.getVal(8);
     }
 
-    public AisPosition getControlledAreaNorthWest() {
-        return controlledAreaNorthWest;
+    public int getDuration() {
+        return duration;
     }
 
-    public void setControlledAreaNorthWest(AisPosition controlledAreaNorthWest) {
-        this.controlledAreaNorthWest = controlledAreaNorthWest;
-    }
-
-    public AisPosition getControlledAreaSouthEast() {
-        return controlledAreaSouthEast;
-    }
-
-    public void setControlledAreaSouthEast(AisPosition controlledAreaSouthEast) {
-        this.controlledAreaSouthEast = controlledAreaSouthEast;
+    public void setDuration(int duration) {
+        this.duration = duration;
     }
 
     @Override
     public SixbitEncoder getEncoded() {
         SixbitEncoder encoder = new SixbitEncoder();
-
-        if (controlledAreaNorthWest != null && controlledAreaSouthEast != null) {
-            encoder.addVal(controlledAreaNorthWest.getRawLatitude(), 28);  // N
-            encoder.addVal(controlledAreaSouthEast.getRawLongitude(), 27); // E
-            encoder.addVal(controlledAreaSouthEast.getRawLatitude(), 28);  // S
-            encoder.addVal(controlledAreaNorthWest.getRawLongitude(), 27); // W
-        }
+        encoder.addVal(duration, 8);
         return encoder;
     }
 
     @Override
     public void parse(BinArray binArray) throws SixbitException {
         System.out.println(binArray.toString());
-        /*
-        this.waypoints = new ArrayList<>();
-        this.msgLinkId = (int) binArray.getVal(10);
-        this.routeType = (int) binArray.getVal(5);
-        super.parse(binArray);
-        */
     }
 
     @Override
     public String toString() {
         return "TacticalVoyagePlanInquiry{" +
-                "controlledAreaNorthWest=" + controlledAreaNorthWest +
-                ", controlledAreaSouthEast=" + controlledAreaSouthEast +
+                "duration=" + duration +
                 "} " + super.toString();
     }
 
