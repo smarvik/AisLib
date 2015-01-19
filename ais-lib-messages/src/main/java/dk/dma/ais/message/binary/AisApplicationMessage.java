@@ -102,6 +102,9 @@ public abstract class AisApplicationMessage {
         if (binaryMessage.getDac() == RouteSuggestion.DAC && binaryMessage.getFi() == RouteSuggestion.FI) {
             return new RouteSuggestion(binaryMessage.getData());
         }
+        if (binaryMessage.getDac() == TacticalVoyagePlan.DAC && binaryMessage.getFi() == TacticalVoyagePlan.FI) {
+            return new TacticalVoyagePlan(binaryMessage.getData());
+        }
         if (binaryMessage.getDac() == TacticalVoyagePlanInquiry.DAC && binaryMessage.getFi() == TacticalVoyagePlanInquiry.FI) {
             return new TacticalVoyagePlanInquiry(binaryMessage.getData());
         }
