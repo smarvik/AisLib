@@ -108,6 +108,9 @@ public abstract class AisApplicationMessage {
         if (binaryMessage.getDac() == TacticalVoyagePlanInquiry.DAC && binaryMessage.getFi() == TacticalVoyagePlanInquiry.FI) {
             return new TacticalVoyagePlanInquiry(binaryMessage.getData());
         }
+        if (binaryMessage.getDac() == FlowManagementSuggestion.DAC && binaryMessage.getFi() == FlowManagementSuggestion.FI) {
+            return new FlowManagementSuggestion(binaryMessage.getData());
+        }
 
         return new UnknownAsm(binaryMessage);
     }
